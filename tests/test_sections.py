@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from locators import Main_Locators
 from url import MAIN_URL
 
-class Test_Sections:
+class TestSections:
 
     def test_sections_tab(self, driver):
         wait=WebDriverWait(driver, 15)
@@ -13,11 +13,14 @@ class Test_Sections:
 
         wait.until(EC.visibility_of_element_located(Main_Locators.HEADING))
 
-        for tab, heading in (Main_Locators.TAB_BUNS, "Булки"), (Main_Locators.TAB_SAUCES, "Соусы"), (Main_Locators.TAB_FILLINGS,"Начинки"):
-            tab_element=wait.until(EC.element_to_be_clickable(tab))
-            driver.execute_script("arguments[0].click();", tab_element)
+        for tab_locator, heading_text in (Main_Locators.TAB_BUNS, "Булки"), (Main_Locators.TAB_SAUCES, "Соусы"), (Main_Locators.TAB_FILLINGS,"Начинки"):
+            tab = wait.until(EC.element_to_be_clickable(tab_locator))
+            driver.execute_script("arguments[0].click();", tab)
             
-            assert "tab_tab_type_current" in tab_element.get_attribute("class")
-            section=(By.XPATH, f'//h2[normalize-space()="{heading}"]')
-            assert wait.until(EC.visibility_of_element_located(section)).is_displayed()
+            wait.until(EC.text_to_be_present_in_element_attribute(tab_locator, "class", "tab_tab_type_current"),f"Вкладка «{heading_text}» не стала активной после клика",)
+            active_tab = driver.find_element(*tab_locator)
+            assert "tab_tab_type_current" in active_tab.get_attribute("class"), (f"Вкладка «{heading_text}» не стала активной после клика")
+
+            section = wait.until(EC.visibility_of_element_located((By.XPATH, f'//h2[normalize-space()="{heading_text}"]')))
+            assert section.is_displayed(), (f"Заголовок раздела «{heading_text}» не отобразился")
 

@@ -23,7 +23,7 @@ class Main_Locators:
     FEED_LINK = (By.XPATH, '//p[normalize-space()="Лента Заказов"]/parent::a')
     ORDER_BUTTON = (By.XPATH, '//button[normalize-space()="Оформить заказ"]')
     LOGO = (By.XPATH, '//div[contains(@class,"AppHeader_header__logo")]//a')
-    TAB_BUNS = (By.XPATH, '//div[contains(@class,"tab_tab__")][.//span[normalize-space()="Булки"]]')
+    TAB_BUNS = (By.XPATH, '//div[contains(@class, "tab_tab_type_current")][.//span[normalize-space()="Булки"]]') #исправленное
     TAB_SAUCES = (By.XPATH, '//div[contains(@class,"tab_tab__")][.//span[normalize-space()="Соусы"]]')
     TAB_FILLINGS = (By.XPATH, '//div[contains(@class,"tab_tab__")][.//span[normalize-space()="Начинки"]]')
 
